@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JournalHub - Beranda</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>JournalHub</h1>
+      <p>Platform untuk berbagi dan menemukan jurnal penelitian berkualitas</p>
+      <nav>
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Daftar</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <section class="intro mb-5">
+      <h2>Apa itu JournalHub?</h2>
+      <p>JournalHub adalah platform online yang memudahkan peneliti untuk mengunggah, mengelola,
+      dan membagikan jurnal penelitian mereka. Setiap jurnal akan melalui proses administrasi
+      oleh tim editorial sebelum dapat diakses publik.</p>
+    </section>
+
+    <section class="features mb-5">
+      <h2>Fitur Utama</h2>
+      <ul>
+        <li><strong>Upload Jurnal:</strong> Unggah file PDF/DOC dengan metadata lengkap.</li>
+        <li><strong>Manajemen Akun:</strong> Daftar sebagai peneliti untuk mengelola jurnal Anda.</li>
+        <li><strong>Sistem Administrasi:</strong> Editor akan meninjau dan menyetujui jurnal Anda.</li>
+        <li><strong>Penerbitan:</strong> Jurnal disetujui akan ditampilkan dan dapat diunduh oleh publik.</li>
+      </ul>
+    </section>
+
+    <section class="upload-steps mb-5">
+      <h2>Cara Mengunggah Jurnal</h2>
+      <ol>
+        <li>Daftar atau login sebagai <em>Researcher</em>.</li>
+        <li>Masuk ke <strong>Dashboard</strong> dan pilih "Upload Jurnal".</li>
+        <li>Isi formulir dengan judul, abstrak, kategori, nama penulis, dan unggah file.</li>
+        <li>Setelah submit, jurnal Anda akan berstatus <em>pending</em>.</li>
+        <li>Tim admin akan meninjau dan menyetujui atau menolak.
+          <ul>
+            <li>Jika disetujui, jurnal akan berstatus <em>approved</em> dan tampil di beranda.</li>
+            <li>Jika ditolak, Anda akan menerima notifikasi untuk revisi.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section class="call-to-action text-center">
+      <p>Siap berbagi penelitian Anda?</p>
+      <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Daftar Sekarang</a>
+    </section>
+  </main>
+
+  <footer class="site-footer text-center py-3">
+    <div class="container">
+      <p>&copy; 2025 JournalHub. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

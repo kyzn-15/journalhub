@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - Journal Website{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col"><h2><i class="fas fa-cog"></i> Admin Dashboard</h2><p>Selamat datang, <strong>{{ session.get('full_name') }}</strong></p></div>
+</div>
+
+<div class="row mb-4">
+  {% for card in [
+    ('Total Users', total_users, 'users', 'primary'),
+    ('Total Jurnal', total_journals, 'book', 'success'),
+    ('Menunggu Review', pending_journals, 'clock', 'warning'),
+    ('Panel Kontrol', 'Admin', 'tachometer-alt', 'info')
+  ] %}
+    <div class="col-md-3 mb-3">
+      <div class="card bg-{{ card[3] }} text-white">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h4>{{ card[1] }}</h4>
+            <p class="mb-0">{{ card[0] }}</p>
+          </div>
+          <i class="fas fa-{{ card[2] }} fa-2x"></i>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="row mb-4">
+  <div class="col">
+    <div class="card">
+      <div class="card-header"><h5><i class="fas fa-file-alt"></i> Jurnal Terbaru</h5></div>
+      <div class="card-body">
+        {% if recent_journals %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead><tr><th>Judul</th><th>Penulis</th><th>Uploader</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+              <tbody>
+                {% for j in recent_journals %}
+                  <tr>
+                    <td>{{ j.title[:50] }}{% if j.title|length>50 %}…{% endif %}</td>
+                    <td>{{ j.author_name }}</td>
+                    <td>{{ j.uploader_name or 'N/A' }}</td>
+                    <td><span class="badge bg-{% if j.status=='approved' %}success{% elif j.status=='pending' %}warning{% else %}danger{% endif %}">{{ j.status.title() }}</span></td>
+                    <td>{{ j.created_at[:10] }}</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="{{ url_for('journal.view_journal', journal_id=j.id) }}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
+                        {% if j.status=='pending' %}
+                          <a href="{{ url_for('admin.approve_journal', journal_id=j.id) }}" class="btn btn-outline-success" onclick="return confirm('Setujui?')"><i class="fas fa-check"></i></a>
+                          <a href="{{ url_for('admin.reject_journal', journal_id=j.id) }}" class="btn btn-outline-warning" onclick="return confirm('Tolak?')"><i class="fas fa-times"></i></a>
+                        {% endif %}
+                        <a href="{{ url_for('admin.delete_journal', journal_id=j.id) }}" class="btn btn-outline-danger" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="alert alert-info"><i class="fas fa-info-circle"></i> Belum ada jurnal.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-header"><h5><i class="fas fa-users"></i> Manajemen Users</h5></div>
+      <div class="card-body">
+        {% if users %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead><tr><th>Nama Lengkap</th><th>Username</th><th>Email</th><th>Role</th><th>Tgl Daftar</th><th>Aksi</th></tr></thead>
+              <tbody>
+                {% for u in users %}
+                  <tr>
+                    <td>{{ u.full_name }}</td><td>{{ u.username }}</td><td>{{ u.email }}</td>
+                    <td><span class="badge bg-{% if u.role=='researcher' %}info{% else %}secondary{% endif %}">{{ u.role.title() }}</span></td>
+                    <td>{{ u.created_at[:10] }}</td>
+                    <td>
+                      <a href="{{ url_for('admin.delete_user', user_id=u.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus user?')">
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="alert alert-info"><i class="fas fa-info-circle"></i> Belum ada user.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
